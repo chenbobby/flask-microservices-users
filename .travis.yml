@@ -1,21 +1,10 @@
-sudo: required
+langauge: python
 
 python:
     - "3.6"
 
 services:
     - postgresql
-    - docker
-
-env:
-    global:
-        - DOCKER_COMPOSE_VERSION=1.13.0
-
-before_install:
-    - sudo rm /usr/local/bin/docker-compose
-    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-    - chmod +x docker-compose
-    - sudo mv docker-compose /usr/local/bin
 
 install:
     - pip install -r requirements.txt
@@ -24,14 +13,10 @@ before_script:
     - export APP_SETTINGS="project.config.TestingConfig"
     - export DATABASE_TEST_URL=postgresql://postgres:@localhost/users_test
     - psql -c 'create database users_test;' -U postgres
-    - docker-compose up --build -d
     - python manage.py recreate_db
 
 script:
-    - docker-compose run users-service python manage.py test
-
-after_script:
-    - docker-compose down
+    - python manage.py test
 
 notifications:
     email: false
