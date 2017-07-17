@@ -17,6 +17,9 @@ before_install:
     - chmod +x docker-compose
     - sudo mv docker-compose /usr/local/bin
 
+install:
+    - pip install -r requirements.txt
+
 before_script:
     - export APP_SETTINGS="project.config.TestingConfig"
     - export DATABASE_TEST_URL=postgresql://postgres:@users-db:5432/users_test
