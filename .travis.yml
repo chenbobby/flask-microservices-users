@@ -1,3 +1,5 @@
+required: sudo
+
 langauge: python
 
 python:
