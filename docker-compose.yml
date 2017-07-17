@@ -32,7 +32,7 @@ services:
 
     users-db:
         container_name: users-db
-        build: ./project/db
+        build: https://github.com/chenbobby/flask-microservices-users.git#master:project/db
         ports:
             - 5435:5432 # Expose ports (HOST:CONTAINER)
         environment:
@@ -44,7 +44,7 @@ services:
 
     users-service:
         container_name: users-service
-        build: .
+        build: https://github.com/chenbobby/flask-microservices-users.git
         volumes:
             - '.:/usr/src/app'
         ports:
