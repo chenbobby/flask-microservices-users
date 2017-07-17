@@ -51,7 +51,7 @@ services:
             - 5001:5000 # Expose ports (HOST:CONTAINER)
         environment:
             - APP_SETTINGS=project.config.DevelopmentConfig
-            - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
+            - DATABASE_DEV_URL=postgres://postgres:postgres@users-db:5432/users_dev
             - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
         depends_on:
             - users-db

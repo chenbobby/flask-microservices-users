@@ -14,7 +14,7 @@ class BaseConfig:
 class DevelopmentConfig(BaseConfig):
     """Development configuration"""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_DEV_URL')
 
 
 class TestingConfig(BaseConfig):
@@ -27,4 +27,4 @@ class TestingConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     """ProductionConfig"""
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_PROD_URL')

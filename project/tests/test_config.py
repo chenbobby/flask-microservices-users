@@ -21,7 +21,7 @@ class TestDevelopmentConfig(TestCase):
         self.assertTrue(app.config['DEBUG'])
         self.assertFalse(current_app is None)
         self.assertTrue(app.config['SQLALCHEMY_DATABASE_URI'] ==
-            os.environ.get('DATABASE_URL'))
+            os.environ.get('DATABASE_DEV_URL'))
 
 
 class TestTestingConfig(TestCase):
@@ -47,8 +47,8 @@ class TestProductionConfig(TestCase):
         self.assertTrue(app.config['SECRET_KEY'] == 'my_precious')
         self.assertFalse(app.config['DEBUG'])
         self.assertFalse(app.config['TESTING'])
-        self.assertFalse(app.config['SQLALCHEMY_DATABASE_URI'] ==
-            'postgres://postgres:postgres@users-db:5432/users_prod')
+        self.assertTrue(app.config['SQLALCHEMY_DATABASE_URI'] ==
+            os.environ.get('DATABASE_PROD_URL'))
 
 
 if __name__ == '__main__':
