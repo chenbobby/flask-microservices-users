@@ -1,6 +1,10 @@
 sudo: required
 
+python:
+    - "3.6"
+
 services:
+    - postgresql
     - docker
 
 env:
