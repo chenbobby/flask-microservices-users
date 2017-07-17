@@ -1,0 +1,56 @@
+# Creates containers for each service listed 
+#
+# 'volume' is not present, because we don't want the production container
+#       to rebuild everytime we change code in development
+#
+# Directory paths in 'build' and 'volume' are relative to this file
+#
+# To build images, run 'docker-compose build'
+#       The first build will take a while but subsequent builds will be
+#       faster since Docker caches results of past builds
+#
+# When built, users-db will send exit code 0 if the container initiated
+#       successfully. Postgres will be available on port 5435 on host
+#       and on port 5432 services running in other containers
+
+version: '3'
+
+services:
+
+    nginx:
+        container_name: nginx
+        build: ./nginx/
+        restart: always
+        ports:
+            - 80:80 # Expose ports (HOST:CONTAINER)
+        depends_on:
+            - users-service
+        links:
+            - users-service
+
+    users-db:
+        container_name: users-db
+        build: ./project/db
+        ports:
+            - 5435:5432 # Expose ports (HOST:CONTAINER)
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        healthcheck:
+            test: exit 0
+
+
+    users-service:
+        container_name: users-service
+        build: .
+        expose:
+            - '5000'
+        environment:
+            - APP_SETTINGS=project.config.ProductionConfig
+            - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_prod
+            - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
+        depends_on:
+            - users-db
+        links:
+            - users-db
+        command: gunicorn -b 0.0.0.0:5000 manage:app
